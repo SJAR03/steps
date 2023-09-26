@@ -3,22 +3,31 @@ import './Counter.css'
 
 const Counter = () => {
   const [step, setStep] = useState(1)
-  const [count, setCount] = useState(1)
+  const [count, setCount] = useState(0)
+  const [date, setDate] = useState(new Date())
 
   function stepCounterPlus () {
-    setStep(step + 1)
+    setStep(s => s + 1)
   }
 
   function stepCounterLess () {
-    setStep(step - 1)
+    if (step > 1) setStep(s => s - 1)
   }
 
   function countCounterPlus () {
     setCount(count + step)
+    // setDate(new Date(date.getTime() + 86400000))
+    const newDate = new Date(date)
+    newDate.setDate(newDate.getDate() + step)
+    setDate(newDate)
   }
 
   function countCounterLess () {
     setCount(count - step)
+    // setDate(new Date(date.getTime() - 86400000))
+    const newDate = new Date(date)
+    newDate.setDate(newDate.getDate() - step)
+    setDate(newDate)
   }
 
   return (
@@ -35,7 +44,13 @@ const Counter = () => {
           <h4>Count: {count}</h4>
           <button onClick={countCounterPlus}>+</button>
         </div>
-        <p>Today is Mon Jun 21 2027</p>
+
+        {count === 0
+          ? (<p>Today is {date.toDateString()}</p>)
+          : count >= 1
+            ? (<p>{count} days from today is {date.toDateString()}</p>)
+            : (<p>{Math.abs(count)} days ago was {date.toDateString()}</p>)}
+
       </div>
 
     </div>
